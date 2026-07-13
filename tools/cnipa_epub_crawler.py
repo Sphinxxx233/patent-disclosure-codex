@@ -12,8 +12,8 @@
 2. 新建浏览器上下文：设定 **桌面 Chrome UA**、**zh-CN**、固定 **视口**（见 ``_new_context``），使请求形态接近普通用户浏览器。
 3. ``page.goto`` 站点首页，**wait_until="load"**。
 4. **等待首页可检索**：首页在访客到达后会先经 **前端脚本/WAF 一类逻辑**，未通过前 **不会出现** 检索输入框 ``#searchStr``。本实现通过 **周期性轮询 DOM**（每 3 秒一次，总时长见 ``EPUB_WAF_MAX_WAIT_SEC``，默认 180s）直到 ``#searchStr`` 出现；**不是**用 requests 直接 POST 能等价替代的步骤。
-5. ``page.fill`` 将关键词写入 ``#searchStr``，对 ``#indexForm`` 执行 **submit**（而非单独点按钮），并 ``expect_navigation`` 等待结果页 **load**。
-6. 结果页 **安定等待**：依次尝试 **load / networkidle**（超时则忽略），再 **固定短时 sleep**，减轻列表/统计脚本未跑完就取 HTML 导致的空壳或半截 DOM。
+5. ``page.fill`` 将关键词写入 ``#searchStr``，对 ``#indexForm`` 执行 **submit**（而非单独点按钮），并等待结果页导航 **commit**。
+6. 等待页面标题变为 **「专利查询结果展示」或「无查询结果」**，以结果 DOM 是否可用为准，不等待该站可能始终不触发的完整 ``load``。
 7. ``page.content()`` 取全页 HTML；若处于导航中抛错则 **重试退避**（``_safe_page_content``），避免竞态。
 8. 后续解析由 **`cnipa_epub_parse.py`** 完成（本文件 ``search_epub_keyword`` 内会调用）。
 
@@ -97,18 +97,6 @@ def wait_for_epub_home_ready(page: Page, *, max_wait_sec: float | None = None) -
     )
 
 
-def _wait_result_page_settled(page: Page) -> None:
-    try:
-        page.wait_for_load_state("load", timeout=30_000)
-    except Exception:
-        pass
-    try:
-        page.wait_for_load_state("networkidle", timeout=25_000)
-    except Exception:
-        pass
-    page.wait_for_timeout(800)
-
-
 def _safe_page_content(page: Page, *, max_attempts: int = 10) -> str:
     last_err: Exception | None = None
     for i in range(max_attempts):
@@ -131,7 +119,7 @@ def _safe_page_content(page: Page, *, max_attempts: int = 10) -> str:
 
 def submit_index_search(page: Page, keyword: str) -> None:
     page.fill("#searchStr", keyword)
-    with page.expect_navigation(timeout=120_000, wait_until="load"):
+    with page.expect_navigation(timeout=120_000, wait_until="commit"):
         form = page.query_selector("#indexForm")
         if form:
             form.evaluate("el => el.submit()")
@@ -142,7 +130,13 @@ def submit_index_search(page: Page, keyword: str) -> None:
                 if (f) f.submit();
             }"""
             )
-    _wait_result_page_settled(page)
+    page.wait_for_function(
+        """() => {
+            const title = document.title.trim();
+            return title === "专利查询结果展示" || title === "无查询结果";
+        }""",
+        timeout=120_000,
+    )
 
 
 def fetch_epub_result_html(
