@@ -10,6 +10,7 @@
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-mermaid%2Fmmdc-339933.svg)](https://nodejs.org/)
 [![AgentSkills](https://img.shields.io/badge/AgentSkills-Standard-green)](https://agentskills.io)
+[![CI](https://github.com/Sphinxxx233/patent-disclosure-codex/actions/workflows/ci.yml/badge.svg)](https://github.com/Sphinxxx233/patent-disclosure-codex/actions/workflows/ci.yml)
 
 <br>
 
@@ -40,7 +41,7 @@
 <tbody>
 <tr><td nowrap width="1%"><strong>项目扫描</strong></td><td>按优先级读文档 / 代码；<code>.docx</code> / <code>.pptx</code> 先转 Markdown 再扫（见 <code>prompts/project_scan.md</code>）</td></tr>
 <tr><td nowrap width="1%"><strong>专利点</strong></td><td>候选点讨论与融合（<code>patent_points_analyzer.md</code>）</td></tr>
-<tr><td nowrap width="1%"><strong>查新</strong></td><td><strong>优先</strong> <a href="http://epub.cnipa.gov.cn/">国知局 · 中国专利公布公告</a>（<code>tools/cnipa_epub_search.py</code>）；异常或无果时降级 联网搜索（Google 学术 / Patents）。著录与外链写入第一章（<code>prior_art_search.md</code>）</td></tr>
+<tr><td nowrap width="1%"><strong>查新</strong></td><td><strong>优先</strong> <a href="http://epub.cnipa.gov.cn/">国知局 · 中国专利公布公告</a>（<code>tools/cnipa_epub_search.py</code>）；异常或无果时降级联网搜索（Google 学术 / Patents）。著录与外链写入第一章（<code>prior_art_search.md</code>）</td></tr>
 <tr><td nowrap width="1%"><strong>交底书成稿</strong></td><td>脱敏模版 + <strong>mermaid</strong> 系统框图与流程图；<code>mermaid_render.py</code> → PNG，默认再出 <strong>.docx</strong></td></tr>
 <tr><td nowrap width="1%"><strong>交付命名</strong></td><td>凡落盘交付：<code>{案件名}_{YYYYMMDDHHmmss}.md</code> 与同名 <code>.docx</code>（<code>disclosure_builder.md</code> §7.3）</td></tr>
 <tr><td nowrap width="1%"><strong>自检</strong></td><td>逻辑闭环、公式与参数一致（<code>disclosure_self_check.md</code>，不写入正文）</td></tr>
@@ -92,18 +93,30 @@ python -m playwright install chromium
 
 图示定稿另需 **Node.js**；在 `tools/` 下执行 `npm install` 或使用 `npx mmdc`（详见 [tools/README.md](tools/README.md)）。
 
+安装后可运行环境诊断：
+
+```bash
+python tools/doctor.py
+```
+
 ---
 
 ## 使用
 
-在 Agent 中用自然语言描述需求即可，例如：
+在 Codex 中用自然语言描述需求即可，例如：
 
 - 专利挖掘、专利点、**技术交底书**、查新、现有技术对比
 - 显式调用：`$patent-disclosure-codex`；也可直接描述“专利挖掘”“生成技术交底书”等需求
 
-建议同时说明 **项目路径** 或 **技术主题**（与 `SKILL.md` 中 `argument-hint` 一致）。
+建议同时说明 **项目路径** 或 **技术主题**。
 **查新（Step 5）** 会优先通过 [中国专利公布公告](http://epub.cnipa.gov.cn/) 检索中国专利公开信息，再按需补充其他来源；流程见 `prompts/prior_art_search.md`。
 在**已有交底书文件**上补充材料或纠错时，无需说「迭代」——技能会按 `merger.md` / `correction_handler.md` 处理；细则见 [SKILL.md](SKILL.md)。
+
+### 数据与法律边界
+
+- 默认只在本地读取项目材料；联网查新仅提交经脱敏的必要技术关键词，不上传源文件、完整代码、客户名、内部项目名、地址或凭据。
+- 涉及未公开方案或商业秘密时，可要求跳过联网查新；Skill 应保留待检索清单供授权后处理。
+- 检索未命中不代表不存在相关专利；交付前应由专利代理师或律师复核检索范围、权利要求方向和法律结论。
 
 ---
 
@@ -114,7 +127,7 @@ python -m playwright install chromium
 ```
 patent-disclosure-codex/
 ├── SKILL.md                    # 入口：触发条件、工具表、步骤与 prompts 引用
-├── prompts/                    # 分步模板（Agent Read 后遵循）
+├── prompts/                    # 分步模板（Codex 读取后遵循）
 │   ├── intake.md
 │   ├── project_scan.md
 │   ├── patent_points_analyzer.md
@@ -127,6 +140,7 @@ patent-disclosure-codex/
 │   ├── correction_handler.md
 │   └── template_reference.md
 ├── tools/                      # mermaid_render、md_to_docx、docx_to_md、pptx_to_md；国知局 cnipa_epub_*（查新）；iteration_dialog_log 等
+├── .github/workflows/ci.yml    # Windows / Linux 自动校验与测试
 ├── docs/                       # PRD、仓库结构说明
 ├── examples/                   # 原材料示例（如 example_batch_job_scheduler/knowledge/）
 ├── outputs/                    # 用户产出，整目录 .gitignore
@@ -147,7 +161,7 @@ patent-disclosure-codex/
 
 ## 参考文档
 
-- [技能入口与 Agent 流程](SKILL.md)（触发条件、`prompts/` 映射、工具表）
+- [技能入口与 Codex 流程](SKILL.md)（触发条件、`prompts/` 映射、工具表）
 - [详细安装说明](INSTALL.md)（Codex 路径与依赖）
 - [图示与转换脚本](tools/README.md)（mermaid / mmdc、Word 导出、国知局 epub 查新工具）
 - [示例案件与原材料说明](examples/README.md)

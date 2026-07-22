@@ -4,17 +4,17 @@
 
 | 路径 | 说明 |
 |------|------|
-| `example_batch_job_scheduler/` | 虚构场景「分布式批任务调度与资源感知」；**仅含 `knowledge/` 原材料**，专利点 / 查新 / 交底书等请在 Agent 流程中生成到 `outputs/` |
+| `example_batch_job_scheduler/` | 虚构场景「分布式批任务调度与资源感知」；**仅含 `knowledge/` 原材料**，专利点 / 查新 / 交底书等请在 Codex 流程中生成到 `outputs/` |
 
 ## 如何使用 `example_batch_job_scheduler` 跑出效果
 
 全流程产物（`patent_points.md`、`prior_art_notes.md`、`disclosure_preview.md`、带时间戳的交底书 `.md`/`.docx` 等）由技能在 **`outputs/{案件标识}/`** 生成；命名与版本规则见 **`disclosure_builder.md` §7.3**、**`iteration_context.md`**。
 
-### 方式 A：只看原材料（不跑 Agent）
+### 方式 A：只看原材料（不跑 Codex）
 
 打开 `example_batch_job_scheduler/knowledge/`，阅读 `docs/README.md`、`docs/architecture.md`、`pkg/scheduler/*.go` 等，理解**扫描输入长什么样**。
 
-### 方式 B：在 Agent 里全流程演练（推荐）
+### 方式 B：在 Codex 里全流程演练（推荐）
 
 前提：已在 Codex 中加载本仓库技能（见仓库根目录 [INSTALL.md](../INSTALL.md)）。技能入口与步骤见 [SKILL.md](../SKILL.md)。
 
@@ -22,7 +22,7 @@
 
    `examples/example_batch_job_scheduler/knowledge/`
 
-2. **用自然语言触发技能并写明边界**（可复制改写后发给 Agent）：
+2. **用自然语言触发技能并写明边界**（可复制改写后发给 Codex）：
 
    ```text
    请使用 $patent-disclosure-codex 全流程执行：
@@ -45,7 +45,7 @@
 
 6. **迭代模式（按意图，无需固定关键词）**
 
-   与 [SKILL.md](../SKILL.md) 一致：只要用户明显是在**已有交底书**上**补充材料**或**纠错/改表述**，Agent 即应 **读取** `prompts/iteration_context.md` 与 `prompts/merger.md` 或 `prompts/correction_handler.md`。
+   与 [SKILL.md](../SKILL.md) 一致：只要用户明显是在**已有交底书**上**补充材料**或**纠错/改表述**，Codex 即应 **读取** `prompts/iteration_context.md` 与 `prompts/merger.md` 或 `prompts/correction_handler.md`。
 
    示例话术：
 

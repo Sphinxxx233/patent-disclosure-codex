@@ -15,6 +15,9 @@
 | `prompts/` | 分步模板（录入、扫描、专利点、查新、预览、成文、自检、迭代） |
 | `prompts/template_reference.md` | 交底书章节细则与 mermaid 图示范例 |
 | `tools/` | `mermaid_render.py`、`md_to_docx.py`、`docx_to_md.py`、`pptx_to_md.py`、`cnipa_epub_search.py`、`cnipa_epub_crawler.py`、`cnipa_epub_parse.py` 等；mermaid 须 Node；国知局抓取须 Playwright，见 `tools/README.md` |
+| `tools/doctor.py` | 检查核心依赖和 Word、PPT、公式、Mermaid、查新等可选能力 |
+| `tests/` | Skill 结构、工具和最小 DOCX 交付链路测试 |
+| `.github/workflows/ci.yml` | Windows / Linux 持续集成 |
 | `examples/example_batch_job_scheduler/` | 示例案件：仅 **`knowledge/`** 虚构原材料（专利点 / 交底书等由流程生成到 `outputs/`） |
 | `docs/PRD.md` | 流程与约束摘要 |
 | `docs/skill-structure.md` | 本仓库结构说明 |

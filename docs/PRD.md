@@ -35,7 +35,7 @@ Step 8  内部自检（prompts/disclosure_self_check.md）→ 修订后交付
 | 路径 | 说明 |
 |------|------|
 | `SKILL.md` | 唯一入口：触发条件、工具映射、步骤与 prompts 引用 |
-| `prompts/` | 分步脚本化说明，由 Agent 读取 后执行 |
+| `prompts/` | 分步脚本化说明，由 Codex 读取后执行 |
 | `tools/` | 可选脚本；含 `md_to_docx.py`、`docx_to_md.py`、`pptx_to_md.py`、`cnipa_epub_search.py`（查新一步；另 `cnipa_epub_crawler.py` / `cnipa_epub_parse.py`），见 `tools/README.md` |
 | `docs/` | PRD、架构学习笔记等 |
 | `outputs/` | 用户定稿导出目录；整目录由 `.gitignore` 忽略；可提交的脱敏范例放在 **`examples/`** |

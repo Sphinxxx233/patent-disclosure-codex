@@ -35,7 +35,7 @@
 
 **格式**：脚本仅支持 OOXML（**`.docx` / `.pptx`**）。旧版 **`.doc` / `.ppt`** 须先在 Office / WPS 中**另存为**新格式后再走下列流程。
 
-Agent **不得**因「只能舒适读取文本」而**遗漏**项目内的 Word / PPT：**必须先转为 Markdown 再纳入扫描**，不能只扫 `.md` 与源码。
+Codex **不得**因「只能舒适读取文本」而**遗漏**项目内的 Word / PPT：**必须先转为 Markdown 再纳入扫描**，不能只扫 `.md` 与源码。
 
 1. **发现**：在扫描目录内 **文件搜索 或列举** `*.docx`、`*.pptx`（含子目录，如 `docs/sample_*.docx`）。
 2. **转换（本仓库脚本）**：对每个文件执行（路径按实际替换；`<skill-root>` 为技能根）：
@@ -61,8 +61,8 @@ Agent **不得**因「只能舒适读取文本」而**遗漏**项目内的 Word 
 
 | 路径 | 动作 |
 |------|------|
-| `docs/architecture.md` | 直接 Read |
-| `docs/sample_architecture_review.docx` | **先** `docx_to_md.py` → 再 Read 生成的 `.md` |
-| `docs/sample_scheduler_deck.pptx` | **先** `pptx_to_md.py` → 再 Read 生成的 `.md` |
+| `docs/architecture.md` | 直接读取 |
+| `docs/sample_architecture_review.docx` | **先** `docx_to_md.py` → 再读取生成的 `.md` |
+| `docs/sample_scheduler_deck.pptx` | **先** `pptx_to_md.py` → 再读取生成的 `.md` |
 | `docs/sample_assets/*.png` | **跳过**单独精读（内容已由 Office 内嵌图 + 转换 MD 覆盖） |
-| `pkg/scheduler/*.go` | Read |
+| `pkg/scheduler/*.go` | 读取 |

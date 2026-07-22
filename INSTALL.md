@@ -62,3 +62,13 @@ python -m playwright install chromium
 ```
 
 未安装时，查新步骤会改用 Codex 的联网搜索能力。Windows 终端如出现中文乱码，可设置 `$env:PYTHONUTF8='1'`。
+
+## 环境诊断
+
+安装完成后运行：
+
+```bash
+python tools/doctor.py
+```
+
+诊断器会区分核心依赖和可选能力。需要检查全部可选项时使用 `python tools/doctor.py --strict`；自动化场景可使用 `--json`。

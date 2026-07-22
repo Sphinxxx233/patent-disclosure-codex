@@ -12,7 +12,7 @@
 
   python tests/test_cnipa_epub_chain.py 批处理
 
-无参数时本测试脚本仍传入「知识图谱」以便本地联调；**命令行直接运行** `cnipa_epub_search.py` **须自带关键词**（不设默认）。技能要求 Agent 在 Step 5 **每词一次 Bash、自行合并 JSON**（见 `prior_art_search.md`）；本测试单次传参仅为联调。
+无参数时本测试脚本仍传入「知识图谱」以便本地联调；**命令行直接运行** `cnipa_epub_search.py` **须自带关键词**（不设默认）。技能要求 Codex 在 Step 5 **每词一次终端调用、自行合并 JSON**（见 `prior_art_search.md`）；本测试单次传参仅为联调。
 """
 from __future__ import annotations
 

@@ -13,7 +13,7 @@ DEFAULT_LOG = "交底书修订对话记录.md"
 
 FILE_HEADER = """# 交底书修订对话记录
 
-> 由 `iteration_dialog_log.py` 或 Agent 按 `prompts/iteration_context.md` 追加；每条含**记录时间**与本轮说明。请勿删除既有条目。
+> 由 `iteration_dialog_log.py` 或 Codex 按 `prompts/iteration_context.md` 追加；每条含**记录时间**与本轮说明。请勿删除既有条目。
 
 """
 
@@ -66,7 +66,7 @@ def main() -> int:
     now_utc = datetime.now(timezone.utc)
     kind_zh = "合并迭代" if args.kind == "merge" else "纠正迭代"
 
-    user_block = (args.user or "").strip() or "（未传入 --user，请 Agent 用编辑工具在本条内补写用户说明摘要。）"
+    user_block = (args.user or "").strip() or "（未传入 --user，请 Codex 用编辑工具在本条内补写用户说明摘要。）"
     summary_block = (args.summary or "").strip() or "—"
     art = (args.artifacts or "").strip()
     if art:

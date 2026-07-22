@@ -1,6 +1,6 @@
 # 示例案件：分布式批任务调度与资源感知
 
-本目录为**虚构教学案件**，仅保留 **`knowledge/`** 作为 **Step 2 扫描原材料**（设计文档、示例 Office、代码片段）。专利点、查新笔记、交底书等产出请在 Agent 全流程中生成到 **`outputs/{案件标识}/`**（见仓库 [examples/README.md](../README.md)）。
+本目录为**虚构教学案件**，仅保留 **`knowledge/`** 作为 **Step 2 扫描原材料**（设计文档、示例 Office、代码片段）。专利点、查新笔记、交底书等产出请在 Codex 全流程中生成到 **`outputs/{案件标识}/`**（见仓库 [examples/README.md](../README.md)）。
 
 ## 目录说明
 

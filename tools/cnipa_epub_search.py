@@ -5,7 +5,7 @@
 内部调用 ``cnipa_epub_crawler.search_epub_keyword``（等同先 ``fetch_epub_result_html`` 再
 ``parse_search_result_html``）。
 
-**输出约定**（便于 Agent 抓取且不触发误判降级）：
+**输出约定**（便于 Codex 抓取且不触发误判降级）：
 
 - **stdout**：**仅一行** ``EPUB_HITS_JSON:`` + JSON 数组（UTF-8，含中文标题与 ``abstract``）。
 - **stderr**：``EPUB_MERGE:`` / ``EPUB_NOTE:`` / ``EPUB_HINT:`` 等为 **ASCII**，减轻 PowerShell 把
@@ -14,7 +14,7 @@
 
 **检索词拆分（仅按空白）**：命令行中所有参数会按 **Python 空白规则**（`str.split()`）拆成多段；
 **一段一查**，结果按公开号去重合并。**不在本脚本内**对长中文做自动分词或拆字——**相关度高的语义化
-检索单位须在 Agent 生成 Bash 前完成**（见 ``prompts/prior_art_search.md``「国知局检索词（生成阶段必做）」）。
+检索单位须在 Codex 生成终端命令前完成**（见 ``prompts/prior_art_search.md``「国知局检索词（生成阶段必做）」）。
 若需**整句一次**向公布站提交（站内 AND），请改用 ``cnipa_epub_crawler.py`` 单传一句。
 
 需已安装：pip install -r tools/requirements-cnipa.txt && python -m playwright install chromium
@@ -141,13 +141,13 @@ def main(argv: list[str] | None = None) -> int:
     if not hits and last_html and len(last_html) < 20_000:
         if multi:
             print(
-                "EPUB_HINT: 0 hits after multi-term run; try broader terms or WebSearch (prior_art_search.md)",
+                "EPUB_HINT: 0 hits after multi-term run; try broader terms or web search (prior_art_search.md)",
                 file=sys.stderr,
                 flush=True,
             )
         else:
             print(
-                "EPUB_HINT: 0 hits; try more terms (space-separated) or WebSearch",
+                "EPUB_HINT: 0 hits; try more terms (space-separated) or web search",
                 file=sys.stderr,
                 flush=True,
             )
@@ -157,7 +157,7 @@ def main(argv: list[str] | None = None) -> int:
         file=sys.stderr,
         flush=True,
     )
-    # 仅此一行写入 stdout，供管道/Agent 稳定解析（勿混入多行文本，避免误判未命中）
+    # 仅此一行写入 stdout，供管道/Codex 稳定解析（勿混入多行文本，避免误判未命中）
     print(
         "EPUB_HITS_JSON:",
         json.dumps(hits_to_jsonable(hits), ensure_ascii=False),

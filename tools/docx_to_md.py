@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-将 Word（.docx）转为 Markdown，并把内嵌图片抽取到磁盘，便于 Step 2 扫描与 Agent Read。
+将 Word（.docx）转为 Markdown，并把内嵌图片抽取到磁盘，便于 Step 2 扫描与 Codex 读取。
 
 依赖 mammoth（见仓库根目录 requirements.txt）。
 
