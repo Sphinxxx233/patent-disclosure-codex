@@ -16,7 +16,7 @@
 
 ### 方式 B：在 Agent 里全流程演练（推荐）
 
-前提：已在 Cursor / Claude Code 等环境中加载本仓库技能（见仓库根目录 [INSTALL.md](../INSTALL.md)）。技能入口与步骤见 [SKILL.md](../SKILL.md)。
+前提：已在 Codex 中加载本仓库技能（见仓库根目录 [INSTALL.md](../INSTALL.md)）。技能入口与步骤见 [SKILL.md](../SKILL.md)。
 
 1. **指定「项目」路径**
 
@@ -25,7 +25,7 @@
 2. **用自然语言触发技能并写明边界**（可复制改写后发给 Agent）：
 
    ```text
-   请按 patent-disclosure-skill 全流程执行：
+   请使用 $patent-disclosure-codex 全流程执行：
    - 项目扫描目录：examples/example_batch_job_scheduler/knowledge/
    - 技术主题：分布式批任务调度、异构集群、资源感知与限频重排队（可参考 knowledge 内文档与代码）
    ```
@@ -45,7 +45,7 @@
 
 6. **迭代模式（按意图，无需固定关键词）**
 
-   与 [SKILL.md](../SKILL.md) 一致：只要用户明显是在**已有交底书**上**补充材料**或**纠错/改表述**，Agent 即应 **`Read`** `prompts/iteration_context.md` 与 `prompts/merger.md` 或 `prompts/correction_handler.md`。
+   与 [SKILL.md](../SKILL.md) 一致：只要用户明显是在**已有交底书**上**补充材料**或**纠错/改表述**，Agent 即应 **读取** `prompts/iteration_context.md` 与 `prompts/merger.md` 或 `prompts/correction_handler.md`。
 
    示例话术：
 

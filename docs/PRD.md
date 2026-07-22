@@ -17,7 +17,7 @@ Step 2  项目扫描（project_scan.md：.docx/.pptx 先转 MD；裸图目录可
         ↓
 Step 3–4 候选专利点 + 融合选定（prompts/patent_points_analyzer.md）
         ↓
-Step 5  联网查新（prior_art_search.md：**优先** tools 中国知局 epub 爬虫，失败再 WebSearch）
+Step 5  联网查新（prior_art_search.md：**优先** tools 中国知局 epub 爬虫，失败再 联网搜索）
         ↓
 Step 6  摘要预览与确认（prompts/disclosure_preview.md）
         ↓
@@ -35,7 +35,7 @@ Step 8  内部自检（prompts/disclosure_self_check.md）→ 修订后交付
 | 路径 | 说明 |
 |------|------|
 | `SKILL.md` | 唯一入口：触发条件、工具映射、步骤与 prompts 引用 |
-| `prompts/` | 分步脚本化说明，由 Agent `Read` 后执行 |
+| `prompts/` | 分步脚本化说明，由 Agent 读取 后执行 |
 | `tools/` | 可选脚本；含 `md_to_docx.py`、`docx_to_md.py`、`pptx_to_md.py`、`cnipa_epub_search.py`（查新一步；另 `cnipa_epub_crawler.py` / `cnipa_epub_parse.py`），见 `tools/README.md` |
 | `docs/` | PRD、架构学习笔记等 |
 | `outputs/` | 用户定稿导出目录；整目录由 `.gitignore` 忽略；可提交的脱敏范例放在 **`examples/`** |
@@ -51,4 +51,4 @@ Step 8  内部自检（prompts/disclosure_self_check.md）→ 修订后交付
 
 ## 5. 环境变量
 
-在 Claude Code、OpenClaw 等环境中，常使用 **`CLAUDE_SKILL_DIR`** 指向技能根目录。使用 Cursor 打开本仓库时，该目录即仓库根目录。
+在 Codex 中，将包含 `SKILL.md` 的目录作为技能根目录，本文记为 `<skill-root>`；所有脚本和 prompt 均从该绝对路径解析。

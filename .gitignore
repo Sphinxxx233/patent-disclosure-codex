@@ -1,5 +1,6 @@
 # 用户产出（整目录不提交）
 outputs/
+tests/_math_test_figures/
 disclosures/
 *.tmp
 ~$*

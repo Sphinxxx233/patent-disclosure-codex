@@ -1,8 +1,10 @@
 <div align="center">
 
-# 中国专利.skill
+# 中国专利 Codex Skill
 
 > 从项目文档到**可交付的技术交底书**：专利点挖掘、**查新优先国知局公布公告站**、脱敏成文与自检闭环。
+
+本项目基于 [handsomestWei/patent-disclosure-skill](https://github.com/handsomestWei/patent-disclosure-skill) 的 MIT 许可版本改造，已适配 OpenAI Codex 的技能元数据、路径解析、工具表述与安装方式。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-blue.svg)](https://www.python.org/)
@@ -38,7 +40,7 @@
 <tbody>
 <tr><td nowrap width="1%"><strong>项目扫描</strong></td><td>按优先级读文档 / 代码；<code>.docx</code> / <code>.pptx</code> 先转 Markdown 再扫（见 <code>prompts/project_scan.md</code>）</td></tr>
 <tr><td nowrap width="1%"><strong>专利点</strong></td><td>候选点讨论与融合（<code>patent_points_analyzer.md</code>）</td></tr>
-<tr><td nowrap width="1%"><strong>查新</strong></td><td><strong>优先</strong> <a href="http://epub.cnipa.gov.cn/">国知局 · 中国专利公布公告</a>（<code>tools/cnipa_epub_search.py</code>）；异常或无果时降级 WebSearch（Google 学术 / Patents）。著录与外链写入第一章（<code>prior_art_search.md</code>）</td></tr>
+<tr><td nowrap width="1%"><strong>查新</strong></td><td><strong>优先</strong> <a href="http://epub.cnipa.gov.cn/">国知局 · 中国专利公布公告</a>（<code>tools/cnipa_epub_search.py</code>）；异常或无果时降级 联网搜索（Google 学术 / Patents）。著录与外链写入第一章（<code>prior_art_search.md</code>）</td></tr>
 <tr><td nowrap width="1%"><strong>交底书成稿</strong></td><td>脱敏模版 + <strong>mermaid</strong> 系统框图与流程图；<code>mermaid_render.py</code> → PNG，默认再出 <strong>.docx</strong></td></tr>
 <tr><td nowrap width="1%"><strong>交付命名</strong></td><td>凡落盘交付：<code>{案件名}_{YYYYMMDDHHmmss}.md</code> 与同名 <code>.docx</code>（<code>disclosure_builder.md</code> §7.3）</td></tr>
 <tr><td nowrap width="1%"><strong>自检</strong></td><td>逻辑闭环、公式与参数一致（<code>disclosure_self_check.md</code>，不写入正文）</td></tr>
@@ -50,26 +52,30 @@
 
 **Python 依赖（分文件）**：
 - **基础（Office / 交底书转换）**：根目录 [`requirements.txt`](requirements.txt) — `pip install -r requirements.txt`
-- **查新（国知局公布公告站，可选）**：[`tools/requirements-cnipa.txt`](tools/requirements-cnipa.txt) — `pip install -r tools/requirements-cnipa.txt`，再执行 `python -m playwright install chromium`  
-  不装亦可：Step 5 将按 `prior_art_search.md` 仅用 **WebSearch** 降级。详见 [INSTALL.md](INSTALL.md)、[tools/README.md](tools/README.md)。
+- **查新（国知局公布公告站，可选）**：[`tools/requirements-cnipa.txt`](tools/requirements-cnipa.txt) — `pip install -r tools/requirements-cnipa.txt`，再执行 `python -m playwright install chromium`
+  不装亦可：Step 5 将按 `prior_art_search.md` 仅用 **联网搜索** 降级。详见 [INSTALL.md](INSTALL.md)、[tools/README.md](tools/README.md)。
 
 ---
 
 ## 安装
 
-### Claude Code
+### Codex
 
-> 请在 **git 仓库根目录** 或全局 skills 路径下放置本目录，使 `SKILL.md` 位于技能文件夹根级（与 [INSTALL.md](INSTALL.md) 一致）。
+将完整仓库克隆到 Codex 的全局 skills 目录，使 `SKILL.md` 位于技能文件夹根级：
 
 ```bash
-# 示例：安装到当前项目的 skills 目录
-mkdir -p .claude/skills
-git clone <本仓库 URL> .claude/skills/patent-disclosure-skill
+mkdir -p ~/.codex/skills
+git clone <你的仓库 URL> ~/.codex/skills/patent-disclosure-codex
 ```
 
-### Cursor
+Windows PowerShell：
 
-将本仓库完整内容放到 Cursor 约定的 skills 路径（见 [INSTALL.md](INSTALL.md) 表格），重启后在 **Settings → Rules** 中确认技能已被发现。
+```powershell
+New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.codex\skills"
+git clone <你的仓库 URL> "$env:USERPROFILE\.codex\skills\patent-disclosure-codex"
+```
+
+重启 Codex 或开启新任务后，可用 `$patent-disclosure-codex` 显式调用。详细说明见 [INSTALL.md](INSTALL.md)。
 
 ### 依赖
 
@@ -92,11 +98,11 @@ python -m playwright install chromium
 
 在 Agent 中用自然语言描述需求即可，例如：
 
-- 专利挖掘、专利点、**技术交底书**、查新、现有技术对比  
-- 斜杠指令（视宿主配置）：如 `/patent-disclosure-skill`、`/交底书`
+- 专利挖掘、专利点、**技术交底书**、查新、现有技术对比
+- 显式调用：`$patent-disclosure-codex`；也可直接描述“专利挖掘”“生成技术交底书”等需求
 
-建议同时说明 **项目路径** 或 **技术主题**（与 `SKILL.md` 中 `argument-hint` 一致）。  
-**查新（Step 5）** 会优先通过 [中国专利公布公告](http://epub.cnipa.gov.cn/) 检索中国专利公开信息，再按需补充其他来源；流程见 `prompts/prior_art_search.md`。  
+建议同时说明 **项目路径** 或 **技术主题**（与 `SKILL.md` 中 `argument-hint` 一致）。
+**查新（Step 5）** 会优先通过 [中国专利公布公告](http://epub.cnipa.gov.cn/) 检索中国专利公开信息，再按需补充其他来源；流程见 `prompts/prior_art_search.md`。
 在**已有交底书文件**上补充材料或纠错时，无需说「迭代」——技能会按 `merger.md` / `correction_handler.md` 处理；细则见 [SKILL.md](SKILL.md)。
 
 ---
@@ -106,7 +112,7 @@ python -m playwright install chromium
 本仓库遵循 [AgentSkills](https://agentskills.io)，根目录即一个 skill：
 
 ```
-patent-disclosure-skill/
+patent-disclosure-codex/
 ├── SKILL.md                    # 入口：触发条件、工具表、步骤与 prompts 引用
 ├── prompts/                    # 分步模板（Agent Read 后遵循）
 │   ├── intake.md
@@ -134,7 +140,7 @@ patent-disclosure-skill/
 
 ## 示例
 
-虚构扫描原材料见 [examples/README.md](examples/README.md)（如 `examples/example_batch_job_scheduler/knowledge/`）。  
+虚构扫描原材料见 [examples/README.md](examples/README.md)（如 `examples/example_batch_job_scheduler/knowledge/`）。
 专利点、查新笔记、交底书等**完整产物**由流程生成到本地 **`outputs/{案件标识}/`**。
 
 ---
@@ -154,7 +160,7 @@ patent-disclosure-skill/
 ## 参考文档
 
 - [技能入口与 Agent 流程](SKILL.md)（触发条件、`prompts/` 映射、工具表）
-- [详细安装说明](INSTALL.md)（Claude Code / Cursor 路径）
+- [详细安装说明](INSTALL.md)（Codex 路径与依赖）
 - [图示与转换脚本](tools/README.md)（mermaid / mmdc、Word 导出、国知局 epub 查新工具）
 - [示例案件与原材料说明](examples/README.md)
 - [产品流程与目录约定](docs/PRD.md)

@@ -37,16 +37,16 @@
 
 Agent **不得**因「只能舒适读取文本」而**遗漏**项目内的 Word / PPT：**必须先转为 Markdown 再纳入扫描**，不能只扫 `.md` 与源码。
 
-1. **发现**：在扫描目录内 **`Glob` 或列举** `*.docx`、`*.pptx`（含子目录，如 `docs/sample_*.docx`）。
-2. **转换（本仓库脚本）**：对每个文件执行（路径按实际替换；`${CLAUDE_SKILL_DIR}` 为技能根）：
+1. **发现**：在扫描目录内 **文件搜索 或列举** `*.docx`、`*.pptx`（含子目录，如 `docs/sample_*.docx`）。
+2. **转换（本仓库脚本）**：对每个文件执行（路径按实际替换；`<skill-root>` 为技能根）：
 
    ```bash
-   python3 ${CLAUDE_SKILL_DIR}/tools/docx_to_md.py -i "<路径>/<名>.docx" -o "<同目录或 docs>/<名>.md"
-   python3 ${CLAUDE_SKILL_DIR}/tools/pptx_to_md.py -i "<路径>/<名>.pptx" -o "<同目录或 docs>/<名>.md"
+   python <skill-root>/tools/docx_to_md.py -i "<路径>/<名>.docx" -o "<同目录或 docs>/<名>.md"
+   python <skill-root>/tools/pptx_to_md.py -i "<路径>/<名>.pptx" -o "<同目录或 docs>/<名>.md"
    ```
 
    需已 `pip install -r requirements.txt`。输出旁会生成 **`{md 主名}_media/`**，内为嵌入图，**以生成的 `.md` 正文与图片引用为扫描依据**。
-3. **再读**：**`Read`** 上述新生成的 `.md`（及必要时扫一眼 `_media` 文件名用于脱敏引用），与原有 `.md`、代码**同等对待**，摘要进专利点材料表。
+3. **再读**：**读取** 上述新生成的 `.md`（及必要时扫一眼 `_media` 文件名用于脱敏引用），与原有 `.md`、代码**同等对待**，摘要进专利点材料表。
 4. **解析重点**：表格、编号列表、**PPT 每页标题与正文**、**Word 修订区以外的正文**、**备注**（`pptx_to_md` 会写入「备注」小节）——均属可专利化叙述来源。
 
 ## 图片与裸图目录（跳过单独识图）

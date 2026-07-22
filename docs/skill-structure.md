@@ -2,7 +2,7 @@
 
 ## 设计原则
 
-- **`SKILL.md`**：入口与编排；具体写法分散在 **`prompts/`**，由执行方在运行时用 **`Read`** 加载，避免单文件过长。
+- **`SKILL.md`**：入口与编排；具体写法分散在 **`prompts/`**，由执行方在运行时用 **读取** 加载，避免单文件过长。
 - **`tools/`**：可选脚本扩展，与编排解耦。Word/PPT 转可扫描文本时用 `docx_to_md.py` / `pptx_to_md.py`；查新优先 `cnipa_epub_search.py`（一步；需落盘或仅解析文件时用 `cnipa_epub_crawler.py` / `cnipa_epub_parse.py`，见 `prior_art_search.md`）。
 - **`outputs/`**：整目录由 `.gitignore` 忽略；可随仓库提交的范例见 **`examples/`**。
 - **`examples/`**：随仓库提交的虚构**原材料**示例（如 `knowledge/`）；流程产出在 `outputs/`。
@@ -20,9 +20,9 @@
 | `docs/skill-structure.md` | 本仓库结构说明 |
 | `docs/效果例-*.jpg` | README「运行效果」配图 |
 
-## 环境变量 `CLAUDE_SKILL_DIR`
+## 技能根目录
 
-在 Claude Code、OpenClaw 等环境中，常由平台将 **`CLAUDE_SKILL_DIR`** 设为技能根目录，即包含 `SKILL.md` 的目录。在本地用 Cursor 打开本仓库时，该目录即仓库根；`${CLAUDE_SKILL_DIR}/prompts/...` 与 `./prompts/...` 等价。
+Codex 执行时先把包含 `SKILL.md` 的目录解析为绝对路径，本文统一记为 `<skill-root>`。因此 `<skill-root>/prompts/...` 指向本仓库的分步指令，不依赖宿主专用环境变量。
 
 ## 用户定稿建议路径
 

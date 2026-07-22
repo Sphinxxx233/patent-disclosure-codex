@@ -1,0 +1,4 @@
+interface:
+  display_name: "中国专利技术交底书"
+  short_description: "从项目材料挖掘专利点、联网查新并生成可交付技术交底书"
+  default_prompt: "Use $patent-disclosure-codex to scan this project, identify patentable ideas, and draft a Chinese patent disclosure."
