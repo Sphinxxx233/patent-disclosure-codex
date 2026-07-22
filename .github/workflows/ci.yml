@@ -9,6 +9,8 @@ permissions:
 
 jobs:
   test:
+    env:
+      PYTHONUTF8: "1"
     strategy:
       fail-fast: false
       matrix:
@@ -26,8 +28,6 @@ jobs:
       - name: Validate Python syntax
         run: python -m compileall -q tools tests
       - name: Run tests
-        env:
-          PYTHONUTF8: "1"
         run: python -m pytest -q
       - name: Diagnose core environment
         run: python tools/doctor.py
